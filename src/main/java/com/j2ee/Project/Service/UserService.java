@@ -1,5 +1,6 @@
 package com.j2ee.Project.Service;
 
+import com.j2ee.Project.Enum.Role;
 import com.j2ee.Project.Model.User;
 import com.j2ee.Project.Repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,14 @@ public class UserService {
     public List<User> returnUser() {
         return userRepo.findAll();
     }
+
+    // READ all users and return
+    public List<User> returnStudents() {
+//         List<User> out = userRepo.findByRole(Role.STUDENT);
+//         return out;
+        return userRepo.findStudents();
+    }
+
 
     // CREATE new User
     public void addUser(User user) {

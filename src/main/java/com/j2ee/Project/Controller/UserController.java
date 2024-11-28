@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-// @CrossOrigin("http://localhost:3000")
-@CrossOrigin("http://127.0.0.1:5500")
+@CrossOrigin("http://localhost:3000")
+// @CrossOrigin("http://127.0.0.1:5500")
 public class UserController {
 
     @Autowired
@@ -18,6 +18,11 @@ public class UserController {
     @GetMapping("users")
     public List<User> getAllUsers() {    // READ
         return userService.returnUser();
+    }
+
+    @GetMapping("students")
+    public List<User> getAllStudents() {    // READ
+        return userService.returnStudents();
     }
 
 
