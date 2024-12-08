@@ -1,5 +1,7 @@
 package com.j2ee.Project.Service;
 
+import com.j2ee.Project.Enum.Role;
+
 import com.j2ee.Project.Model.Enrollment;
 import com.j2ee.Project.Repo.CourseRepository;
 import com.j2ee.Project.Repo.EnrollmentRepository;
@@ -23,6 +25,9 @@ public class EnrollmentService {
 
     // Create a new enrollment
     public Enrollment addEnrollment(Enrollment enrollment) {
+        if(enrollment.getStudent().getRole() != Role.STUDENT) {
+            throw new IllegalArgumentException("Only students can enroll in courses");
+        }
         return enrollmentRepo.save(enrollment);
     }
 

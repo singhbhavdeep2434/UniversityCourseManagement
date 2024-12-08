@@ -20,8 +20,32 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    private String name;
+
+    @Column(nullable = false, unique = true)
+    private String username;
+
+    @Column(nullable = false)
+    private String password;
+
+    @Column(nullable = false, unique = true)
+    private String email;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role;
+
+
     public int getId() {
         return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void setId(int id) {
@@ -60,21 +84,11 @@ public class User {
         this.role = role;
     }
 
-    @Column(nullable = false, unique = true)
-    private String username;
 
-    @Column(nullable = false)
-    private String password;
 
-    @Column(nullable = false, unique = true)
-    private String email;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Role role;
-
-    public User(String username, String password, String email, Role role) {
+    public User(String username, String name, String password, String email, Role role) {
         this.username = username;
+        this.name = name;
         this.password = password;
         this.email = email;
         this.role = role;

@@ -1,6 +1,7 @@
 package com.j2ee.Project.Model;
 
 
+import com.j2ee.Project.Enum.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,6 +23,12 @@ public class Enrollment {
     @ManyToOne
     @JoinColumn(name = "student_id", nullable = false)
     private User student;
+    
+    @ManyToOne
+    @JoinColumn(name = "course_id", nullable = false)
+    private Course course;
+
+    private String grade;
 
     public int getId() {
         return id;
@@ -55,14 +62,12 @@ public class Enrollment {
         this.grade = grade;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "course_id", nullable = false)
-    private Course course;
-
-    private String grade;
 
     // Custom constructor for creating enrollment without an ID
     public Enrollment(User student, Course course, String grade) {
+        if (student.getRole() != Role.STUDENT) {
+            throw new IllegalArgumentException("Only students can enroll in courses.");
+        }
         this.student = student;
         this.course = course;
         this.grade = grade;

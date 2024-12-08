@@ -64,9 +64,21 @@ public class Course {
         this.credits = credits;
     }
 
+    public User getProfessor() {
+        return professor;
+    }
+
+    public void setProfessor(User professor) {
+        this.professor = professor;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @OneToOne
+    @JoinColumn(name = "professor_id")
+    private User professor;
 
     @Column(nullable = false, unique = true)
     private String courseCode;
@@ -84,7 +96,8 @@ public class Course {
     private int credits;
 
     // Custom constructor without ID for easier creation of new courses
-    public Course(String courseCode, String courseName, String department, String semester, int credits) {
+    public Course(User professor, String courseCode, String courseName, String department, String semester, int credits) {
+        this.professor = professor;
         this.courseCode = courseCode;
         this.courseName = courseName;
         this.department = department;

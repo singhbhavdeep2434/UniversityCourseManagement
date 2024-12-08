@@ -14,5 +14,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
      @Query("SELECT u FROM User u WHERE u.role = com.j2ee.Project.Enum.Role.STUDENT")
      List<User> findStudents();
 
+     User findByUsername(String username);
+
     // List<User> findByRole(Role role);
 }

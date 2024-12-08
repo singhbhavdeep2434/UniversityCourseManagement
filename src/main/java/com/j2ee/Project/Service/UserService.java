@@ -1,9 +1,9 @@
 package com.j2ee.Project.Service;
 
-import com.j2ee.Project.Enum.Role;
 import com.j2ee.Project.Model.User;
 import com.j2ee.Project.Repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,6 +14,15 @@ public class UserService {
 
     @Autowired
     UserRepository userRepo;
+
+
+    private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
+
+    public User saveUser(User user) {
+        user.setPassword(encoder.encode(user.getPassword()));
+        System.out.println(user.getPassword());
+        return userRepo.save(user);
+    }
 
 
     // READ all users and return
