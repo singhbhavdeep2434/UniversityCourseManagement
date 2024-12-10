@@ -18,6 +18,7 @@ public class UserService {
 
     private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
+
     public User saveUser(User user) {
         user.setPassword(encoder.encode(user.getPassword()));
         System.out.println(user.getPassword());
@@ -50,28 +51,49 @@ public class UserService {
 
 
     public User getUser(int id) {
-        try {
-            Optional<User> optionalUser = userRepo.findById(id);
-            if (optionalUser.isPresent()) {
-                return optionalUser.get(); // Get the User object from the Optional
-            } else {
-                throw new RuntimeException("User not found for id :: " + id); // Handle the case where the user is not found
-            }
-        } catch (Exception e) {
-            throw new RuntimeException("An error occurred while retrieving the user: " + e.getMessage(), e);
-        }
+
+        return userRepo.findById(id);
+//        try {
+//            Optional<User> optionalUser = userRepo.findById(id);
+//            if (optionalUser.isPresent()) {
+//                return optionalUser.get(); // Get the User object from the Optional
+//            } else {
+//                throw new RuntimeException("User not found for id :: " + id); // Handle the case where the user is not found
+//            }
+//        } catch (Exception e) {
+//            throw new RuntimeException("An error occurred while retrieving the user: " + e.getMessage(), e);
+//        }
     }
 
 
 
 
-    // UPDATES existing user
-    public void updateUser(User user) {
-        userRepo.save(user);
+    public User updateUser(int id, User editedUser){
+        // Find the existing user by ID
+        User user = userRepo.findById(id);
+
+//        if (user == null) {
+//            throw new Exception("User not found with id: " + id);
+//        }
+
+        // Update the existing user with the editedUser details
+        user.setName(editedUser.getName());
+        user.setUsername(editedUser.getUsername());
+        user.setEmail(editedUser.getEmail());
+        user.setRole(editedUser.getRole());
+        // Add more fields to update as needed
+
+        // Save the updated user
+        return userRepo.save(user);
     }
+
 
     public void deleteUser(int id) {
         userRepo.deleteById(id);
     }
 
+    public String getUserRole(String username) {
+        User user = userRepo.findByUsername(username);
+        return String.valueOf(user.getRole());
+    }
 }

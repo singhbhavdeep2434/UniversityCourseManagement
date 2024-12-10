@@ -58,6 +58,7 @@ public class JwtService {
         }
     }
 
+    // OLD
     public String generateToken(String username) {
 
         Map<String, Object> claims = new HashMap<>();
@@ -71,7 +72,23 @@ public class JwtService {
 
     }
 
-    private Key getKey() {
+    // NEW
+    public String generateTokenWithRole(String username, String role) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("role", role); // Add the role to claims
+
+        return Jwts.builder()
+                .setClaims(claims) // Include claims with role
+                .setSubject(username)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 30)) // Token validity: 30 minutes
+                .signWith(getKey(), SignatureAlgorithm.HS256) // Use your signing key
+                .compact();
+    }
+
+
+
+    public Key getKey() {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
     }
@@ -91,6 +108,13 @@ public class JwtService {
                 .setSigningKey(getKey())
                 .build().parseClaimsJws(token).getBody();
     }
+
+
+    // NEW
+    public String extractRole(String token) {
+        return extractClaim(token, claims -> claims.get("role", String.class));
+    }
+
 
 
     public boolean validateToken(String token, UserDetails userDetails) {

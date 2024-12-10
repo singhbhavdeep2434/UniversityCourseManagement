@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 
 @Entity
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "enrollments")
 @Component
@@ -29,6 +28,10 @@ public class Enrollment {
     private Course course;
 
     private String grade;
+
+    public Enrollment() {
+
+    }
 
     public int getId() {
         return id;

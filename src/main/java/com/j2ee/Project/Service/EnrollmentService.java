@@ -2,14 +2,20 @@ package com.j2ee.Project.Service;
 
 import com.j2ee.Project.Enum.Role;
 
+import com.j2ee.Project.Model.Course;
 import com.j2ee.Project.Model.Enrollment;
+import com.j2ee.Project.Model.User;
 import com.j2ee.Project.Repo.CourseRepository;
 import com.j2ee.Project.Repo.EnrollmentRepository;
 import com.j2ee.Project.Repo.UserRepository;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import static javax.crypto.Cipher.SECRET_KEY;
 
 @Service
 public class EnrollmentService {
@@ -21,7 +27,13 @@ public class EnrollmentService {
     CourseRepository courseRepo;
 
     @Autowired
+    User user;
+
+    @Autowired
     UserRepository userRepo;
+
+    @Autowired
+    JwtService jwtService;
 
     // Create a new enrollment
     public Enrollment addEnrollment(Enrollment enrollment) {
@@ -90,4 +102,54 @@ public class EnrollmentService {
     public Enrollment enrollStudentInCourse(Enrollment enrollment) {
         return enrollmentRepo.save(enrollment);
     }
+
+    public Enrollment enrollInCourse(Course course, String token) {
+        // Get the logged-in user (from JWT token)
+        String username = getUsernameFromToken(token); // Decoding JWT token to extract the username or userId
+
+        User loggedInUser = userRepo.findByUsername(username);
+
+        // Enroll the user in the course
+        // Course cou = courseRepo.findById(course.getId());
+
+        Course cou = courseRepo.findById(course.getId())
+                .orElseThrow(() -> new CourseNotFoundException("Course not found"));
+
+
+
+        Enrollment enrollment = new Enrollment();
+        enrollment.setStudent(loggedInUser);
+        enrollment.setCourse(cou);
+        enrollment.setGrade(" "); // or set it based on business logic
+
+        return enrollmentRepo.save(enrollment); // Save enrollment to database
+
+        // Return the enrollment object
+        // return enrollment;
+
+    }
+
+    private String getUsernameFromToken(String token) {
+        try {
+            if (token.startsWith("Bearer ")) {
+                token = token.substring(7); // Remove "Bearer " prefix
+            }
+
+            Claims claims = Jwts.parserBuilder()
+                    .setSigningKey(jwtService.getKey())  // Using the JwtService's secret key
+                    .build().parseClaimsJws(token)
+                    .getBody();
+
+            return claims.getSubject();  // Username or user ID typically
+        } catch (Exception e) {
+            throw new RuntimeException("Invalid token", e);
+        }
+    }
+
+
+    public List<Enrollment> getEnrollmentsByUsername(String username) {
+        int studentId = userRepo.findByUsername(username).getId();
+        return enrollmentRepo.findByStudentId(studentId);
+    }
+
 }

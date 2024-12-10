@@ -1,7 +1,10 @@
 package com.j2ee.Project.Controller;
 
+import com.j2ee.Project.Model.Course;
 import com.j2ee.Project.Model.Enrollment;
 import com.j2ee.Project.Service.EnrollmentService;
+import com.j2ee.Project.Service.JwtService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,6 +14,9 @@ import java.util.List;
 // @CrossOrigin("http://localhost:3000")
 // @CrossOrigin("http://localhost:5173")
 public class EnrollmentController {
+
+    @Autowired
+    JwtService jwtService;
 
     @Autowired
     EnrollmentService enrollmentService;
@@ -46,6 +52,20 @@ public class EnrollmentController {
     public Enrollment enrollStudent(@RequestBody Enrollment enrollment) {
         return enrollmentService.enrollStudentInCourse(enrollment);
     }
+
+    @PostMapping("enroll")
+    public Enrollment enroll(@RequestBody Course course, @RequestHeader("Authorization") String token) {
+        return enrollmentService.enrollInCourse(course, token);
+
+    }
+
+    @GetMapping("/my-enrollments")
+    public List<Enrollment> getUserEnrollments(HttpServletRequest request) {
+        String token = request.getHeader("Authorization").substring(7);
+        String username = jwtService.extractUserName(token);
+        return enrollmentService.getEnrollmentsByUsername(username);
+    }
+
 
 
 
