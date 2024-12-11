@@ -11,10 +11,7 @@ import org.springframework.stereotype.Component;
 import java.util.Optional;
 
 @Entity
-@Data
-@AllArgsConstructor
 @Table(name = "enrollments")
-@Component
 public class Enrollment {
 
     @Id
@@ -80,6 +77,7 @@ public class Enrollment {
         this.course = course;
         this.grade = grade;
     }
+
 
 
 }

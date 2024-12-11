@@ -23,9 +23,6 @@ import java.util.function.Function;
 @Service
 public class JwtService {
 
-    @Value("${jwt.secret}")
-    private static String SECRET;
-
     private String secretKey;
 
     private static Map<String, Date> bin = new ConcurrentHashMap<>();

@@ -8,11 +8,7 @@ import org.springframework.stereotype.Component;
 import jakarta.persistence.Column;
 
 @Entity
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "courses")
-@Component
 public class Course {
 
 
@@ -103,5 +99,8 @@ public class Course {
         this.department = department;
         this.semester = semester;
         this.credits = credits;
+    }
+
+    public Course() {
     }
 }

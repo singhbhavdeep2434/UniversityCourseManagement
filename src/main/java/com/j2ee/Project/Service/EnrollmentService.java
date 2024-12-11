@@ -12,22 +12,23 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static javax.crypto.Cipher.SECRET_KEY;
 
 @Service
 public class EnrollmentService {
 
-    @Autowired
-    private EnrollmentRepository enrollmentRepo;
+    private final EnrollmentRepository enrollmentRepo;
+
+    @Value("${jwt.secret}")
+    String SECRET;
 
     @Autowired
     CourseRepository courseRepo;
 
-    @Autowired
     User user;
 
     @Autowired
@@ -35,6 +36,11 @@ public class EnrollmentService {
 
     @Autowired
     JwtService jwtService;
+
+    @Autowired
+    public EnrollmentService(EnrollmentRepository enrollmentRepo) {
+        this.enrollmentRepo = enrollmentRepo;
+    }
 
     // Create a new enrollment
     public Enrollment addEnrollment(Enrollment enrollment) {
@@ -137,7 +143,7 @@ public class EnrollmentService {
             }
 
             Claims claims = Jwts.parserBuilder()
-                    .setSigningKey(jwtService.getKey())  // Using the JwtService's secret key
+                    .setSigningKey(SECRET)  // Using the JwtService's secret key
                     .build().parseClaimsJws(token)
                     .getBody();
 
