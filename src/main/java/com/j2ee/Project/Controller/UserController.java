@@ -22,8 +22,6 @@ public class UserController {
     @Autowired
     UserService userService;
 
-
-
     @Autowired
     private JwtService jwtService;
 

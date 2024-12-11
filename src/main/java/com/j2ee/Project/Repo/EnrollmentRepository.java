@@ -12,7 +12,7 @@ import java.util.List;
 public interface EnrollmentRepository extends JpaRepository<Enrollment, Integer> {
     List<Enrollment> findByStudentId(int studentId); // Method to find enrollments by student ID
     List<Enrollment> findByCourseId(int courseId);   // Method to find enrollments by course ID
-
+    List<Enrollment> findAll();
 
 //    @Query("SELECT e FROM Enrollment e WHERE e.user.username = :username")
 //    List<Enrollment> findByUsername(@Param("username") String username);

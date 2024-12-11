@@ -11,8 +11,8 @@ import java.util.Optional;
 public class CourseService {
 
 
+    @Autowired
     CourseRepository courseRepo;
-
 
     // READ all courses and return
     public List<Course> returnCourses() {

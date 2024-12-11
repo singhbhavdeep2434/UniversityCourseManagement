@@ -20,21 +20,25 @@ import java.util.List;
 @Service
 public class EnrollmentService {
 
-    private EnrollmentRepository enrollmentRepo;
+    private final EnrollmentRepository enrollmentRepo;
 
-    private final String SECRET;
+    @Value("${jwt.secret}")
+    String SECRET;
 
+    @Autowired
     CourseRepository courseRepo;
 
     User user;
 
+    @Autowired
     UserRepository userRepo;
 
     @Autowired
     JwtService jwtService;
 
-    public EnrollmentService(@Value("${jwt.secret}")String secret) {
-        SECRET = secret;
+    @Autowired
+    public EnrollmentService(EnrollmentRepository enrollmentRepo) {
+        this.enrollmentRepo = enrollmentRepo;
     }
 
     // Create a new enrollment
