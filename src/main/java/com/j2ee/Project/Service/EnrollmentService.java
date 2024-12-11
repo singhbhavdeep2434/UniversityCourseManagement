@@ -10,6 +10,7 @@ import com.j2ee.Project.Repo.EnrollmentRepository;
 import com.j2ee.Project.Repo.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -55,11 +56,11 @@ public class EnrollmentService {
     }
 
     // Update an existing enrollment
-    public Enrollment updateEnrollment(Enrollment enrollment) {
-        // Ensure that the enrollment exists
-        getEnrollment(enrollment.getId());
-        return enrollmentRepo.save(enrollment);
-    }
+//    public Enrollment updateEnrollment(Enrollment enrollment) {
+//        // Ensure that the enrollment exists
+//        getEnrollment(enrollment.getId());
+//        return enrollmentRepo.save(enrollment);
+//    }
 
     // Delete an enrollment
     public void deleteEnrollment(int enrollmentId) {
@@ -150,6 +151,18 @@ public class EnrollmentService {
     public List<Enrollment> getEnrollmentsByUsername(String username) {
         int studentId = userRepo.findByUsername(username).getId();
         return enrollmentRepo.findByStudentId(studentId);
+    }
+
+    public Enrollment updateEnrollment(Enrollment enrollment) {
+        Enrollment existingEnrollment = enrollmentRepo.findById(enrollment.getId())
+                .orElseThrow(() -> new EntityNotFoundException("Enrollment not found with id: " + enrollment.getId()));
+
+        // Update the existing enrollment with new values
+        existingEnrollment.setGrade(enrollment.getGrade());
+//        existingEnrollment.setCourse(enrollment.getCourse());
+//        existingEnrollment.setStudent(enrollment.getStudent());
+
+        return enrollmentRepo.save(existingEnrollment);
     }
 
 }

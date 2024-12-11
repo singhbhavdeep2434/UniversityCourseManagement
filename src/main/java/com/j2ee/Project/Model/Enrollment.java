@@ -8,6 +8,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Entity
 @Data
 @AllArgsConstructor
@@ -31,6 +33,9 @@ public class Enrollment {
 
     public Enrollment() {
 
+    }
+
+    public Enrollment(User student, Optional<Course> course, String grade) {
     }
 
     public int getId() {

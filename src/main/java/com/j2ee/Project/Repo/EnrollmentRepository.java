@@ -14,6 +14,7 @@ public interface EnrollmentRepository extends JpaRepository<Enrollment, Integer>
     List<Enrollment> findByCourseId(int courseId);   // Method to find enrollments by course ID
 
 
+
 //    @Query("SELECT e FROM Enrollment e WHERE e.user.username = :username")
 //    List<Enrollment> findByUsername(@Param("username") String username);
 
