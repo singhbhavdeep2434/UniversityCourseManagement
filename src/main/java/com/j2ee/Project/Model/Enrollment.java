@@ -9,10 +9,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Entity
-@Data
-@AllArgsConstructor
 @Table(name = "enrollments")
-@Component
 public class Enrollment {
 
     @Id
@@ -75,6 +72,7 @@ public class Enrollment {
         this.course = course;
         this.grade = grade;
     }
+
 
 
 }

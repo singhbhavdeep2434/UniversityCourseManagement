@@ -3,6 +3,7 @@ package com.j2ee.Project.Model;
 public class SignoutRequest {
     String token;
 
+
     @Override
     public String toString() {
         return "SignoutRequest{" +

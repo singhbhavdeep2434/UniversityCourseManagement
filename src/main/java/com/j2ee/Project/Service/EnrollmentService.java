@@ -11,29 +11,31 @@ import com.j2ee.Project.Repo.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static javax.crypto.Cipher.SECRET_KEY;
 
 @Service
 public class EnrollmentService {
 
-    @Autowired
     private EnrollmentRepository enrollmentRepo;
 
-    @Autowired
+    private final String SECRET;
+
     CourseRepository courseRepo;
 
-    @Autowired
     User user;
 
-    @Autowired
     UserRepository userRepo;
 
     @Autowired
     JwtService jwtService;
+
+    public EnrollmentService(@Value("${jwt.secret}")String secret) {
+        SECRET = secret;
+    }
 
     // Create a new enrollment
     public Enrollment addEnrollment(Enrollment enrollment) {
@@ -136,7 +138,7 @@ public class EnrollmentService {
             }
 
             Claims claims = Jwts.parserBuilder()
-                    .setSigningKey(jwtService.getKey())  // Using the JwtService's secret key
+                    .setSigningKey(SECRET)  // Using the JwtService's secret key
                     .build().parseClaimsJws(token)
                     .getBody();
 

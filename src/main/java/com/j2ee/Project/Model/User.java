@@ -9,11 +9,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Entity
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "users")
-@Component
 public class User {
 
     @Id
@@ -85,6 +81,8 @@ public class User {
     }
 
 
+    public User() {
+    }
 
     public User(String username, String name, String password, String email, Role role) {
         this.username = username;

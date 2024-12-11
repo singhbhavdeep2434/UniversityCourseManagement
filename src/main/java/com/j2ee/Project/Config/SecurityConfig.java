@@ -57,6 +57,11 @@ public class SecurityConfig {
     }
 
     @Bean
+    public String getString(){
+        return new String();
+    }
+
+    @Bean
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration configuration = new CorsConfiguration();
